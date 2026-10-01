@@ -1,22 +1,131 @@
 # AI Job Search Automation
 
-Pipeline de automação desenvolvido em **n8n** para buscar, filtrar, classificar e priorizar vagas de forma automática, combinando regras determinísticas, inteligência artificial, persistência em PostgreSQL e notificações via Telegram.
+> **Da busca manual de dezenas de vagas para uma caixa de entrada com oportunidades já filtradas, avaliadas e priorizadas de acordo com o meu perfil.**
 
-O objetivo do projeto é reduzir o trabalho manual da busca por oportunidades e transformar uma lista de vagas em um fluxo de decisão estruturado: **coletar → validar → filtrar → analisar → priorizar → registrar → notificar**.
+Este projeto nasceu de um problema que eu estava enfrentando na prática durante minha busca por emprego.
+
+Eu pesquisava diferentes títulos e áreas, abria diversas vagas, lia descrições inteiras e comparava manualmente cada requisito com aquilo que eu realmente sabia, estudava ou já tinha feito profissionalmente.
+
+O problema era que grande parte dessas oportunidades **não tinha aderência suficiente com o meu perfil**.
+
+Muitas exigiam senioridade acima da minha, conhecimentos que eu ainda não possuía, experiência específica que eu não tinha ou simplesmente pouca relação com aquilo que eu vinha buscando.
+
+Então decidi automatizar a triagem.
+
+Desenvolvi um workflow em **n8n** que busca vagas, normaliza os dados, aplica filtros, compara a oportunidade com o meu perfil, calcula um **score de compatibilidade de 0 a 100** e envia para o meu Telegram somente as vagas classificadas como **média ou alta aderência**.
+
+E o fluxo não termina no score.
+
+Quando uma oportunidade chega até mim, eu também recebo informações que ajudam a decidir e preparar a candidatura: **link da vaga, palavras-chave, pontos fortes, lacunas, estratégia de currículo, dados do recrutador quando disponíveis e uma mensagem sugerida para contato**.
 
 <p align="center">
-  <img src="docs/workflow-overview.png" alt="Workflow completo da automação de busca e classificação de vagas no n8n" width="100%">
+  <img src="docs/workflow-overview.png" alt="Workflow completo da automação de busca e priorização de vagas" width="100%">
 </p>
 
 ---
 
-## 1. Visão geral
+## 1. O problema
 
-A automação executa buscas programadas, coleta vagas, normaliza os dados retornados, elimina oportunidades claramente incompatíveis, remove duplicidades e utiliza IA apenas nas vagas que passaram pelo primeiro filtro.
+Durante minha busca por uma nova oportunidade, percebi que uma parte relevante do meu tempo não era gasta me candidatando.
 
-Depois da análise, cada oportunidade recebe uma pontuação de aderência, uma classificação e uma ação sugerida. As vagas relevantes são registradas em PostgreSQL e passam por uma segunda análise para preparação da candidatura antes de serem enviadas ao Telegram.
+Era gasta **procurando e descartando vagas**.
 
-### Fluxo principal
+O processo normalmente era:
+
+```text
+Pesquisar vários títulos
+        ↓
+Abrir diversas vagas
+        ↓
+Ler as descrições
+        ↓
+Identificar requisitos
+        ↓
+Comparar com meu perfil
+        ↓
+Descobrir que boa parte não fazia sentido
+        ↓
+Repetir tudo novamente
+```
+
+Eu precisava verificar manualmente itens como:
+
+- senioridade;
+- conhecimentos técnicos;
+- experiência exigida;
+- formação;
+- localização;
+- modalidade de trabalho;
+- requisitos obrigatórios;
+- diferenciais;
+- relação real entre a oportunidade e o meu perfil.
+
+Isso criava um volume grande de trabalho repetitivo antes mesmo de chegar à candidatura.
+
+A pergunta que deu origem ao projeto foi:
+
+> **E se eu automatizasse a parte de procurar, filtrar e comparar as vagas, deixando para mim apenas as oportunidades que realmente merecem atenção?**
+
+---
+
+## 2. A solução
+
+A solução foi transformar a busca por vagas em um pipeline de triagem e priorização.
+
+Em vez de analisar manualmente cada oportunidade, o workflow executa esse processo em etapas:
+
+1. realiza diferentes buscas de vagas;
+2. coleta as oportunidades encontradas;
+3. normaliza os dados;
+4. aplica um pré-filtro determinístico;
+5. remove duplicidades;
+6. compara a vaga com o meu perfil;
+7. calcula um score de compatibilidade;
+8. registra o resultado em PostgreSQL;
+9. aprofunda a análise das melhores oportunidades;
+10. envia para o Telegram somente as vagas que atingem o nível definido.
+
+O objetivo não é deixar a IA decidir se eu devo ou não aceitar uma oportunidade.
+
+O objetivo é **reduzir o ruído antes da minha decisão**.
+
+---
+
+## 3. O que mudou para mim
+
+### Antes
+
+Eu precisava encontrar a vaga e fazer praticamente toda a triagem manualmente.
+
+### Agora
+
+```text
+Automação busca
+     ↓
+Filtra
+     ↓
+Remove duplicidades
+     ↓
+Compara com meu perfil
+     ↓
+Calcula aderência
+     ↓
+Descarta o que não faz sentido
+     ↓
+Analisa as melhores vagas
+     ↓
+Telegram
+```
+
+Meu papel deixa de ser **procurar vagas** e passa a ser **avaliar oportunidades já priorizadas**.
+
+E quando uma vaga chega até mim, ela não chega apenas como um link.
+
+Ela chega acompanhada de contexto para eu decidir e agir mais rápido.
+
+---
+
+## 4. Visão geral do workflow
 
 ```mermaid
 flowchart LR
@@ -34,127 +143,127 @@ flowchart LR
     J -->|Baixa / Descartar| M[Encerrar fluxo]
 ```
 
----
-
-## 2. Problema
-
-A busca manual por vagas envolve várias tarefas repetitivas:
-
-- repetir pesquisas em diferentes cargos e localidades;
-- abrir e ler diversas descrições;
-- identificar senioridade e modalidade;
-- comparar requisitos com o perfil do candidato;
-- eliminar vagas incompatíveis;
-- controlar oportunidades duplicadas;
-- decidir quais vagas merecem prioridade;
-- preparar currículo e abordagem ao recrutador.
-
-O projeto automatiza essas etapas sem entregar toda a decisão diretamente ao modelo de IA.
-
----
-
-## 3. Solução
-
-A arquitetura utiliza **duas camadas de avaliação**.
-
-A primeira é determinística e executada em JavaScript. Ela elimina ruído antes de qualquer chamada ao modelo.
-
-A segunda utiliza IA para avaliar as vagas que realmente merecem análise, com saída estruturada e critérios de pontuação previamente definidos.
+O workflow combina duas camadas de decisão:
 
 ```text
-Busca
-  ↓
-Normalização
-  ↓
-Pré-filtro por regras
-  ↓
-Deduplicação
-  ↓
-IA para aderência
-  ↓
-Score 0–100
-  ↓
-Persistência
-  ↓
-Análise detalhada das melhores vagas
-  ↓
-Telegram
+Regras determinísticas
+        ↓
+Somente vagas elegíveis
+        ↓
+Avaliação com IA
+        ↓
+Score e classificação por código
 ```
 
-Essa separação reduz chamadas desnecessárias ao modelo, melhora a previsibilidade do pipeline e deixa a lógica crítica mais fácil de auditar.
+Essa separação foi intencional.
+
+A IA não precisa analisar todas as vagas encontradas. Primeiro, regras objetivas eliminam parte do ruído.
 
 ---
 
-# 4. Pipeline
+# 5. Pipeline detalhado
 
-## 4.1 Coleta, normalização e pré-filtro
+## 5.1 Busca, normalização e pré-filtro
 
 <p align="center">
-  <img src="docs/01-job-discovery-filtering.png" alt="Etapa de coleta, normalização e pré-filtro das vagas" width="100%">
+  <img src="docs/01-job-discovery-filtering.png" alt="Busca, normalização e pré-filtro" width="100%">
 </p>
 
 A primeira parte do workflow é responsável por transformar resultados brutos de busca em vagas padronizadas e elegíveis para análise.
 
-### Etapas
-
 | Etapa | Responsabilidade |
 |---|---|
-| `Schedule Trigger` | Executa o workflow automaticamente em horário definido. |
-| `Gerar Pesquisas` | Monta diferentes pesquisas por área, modalidade e localização. |
-| `Executar Pesquisas` | Processa as pesquisas sequencialmente. |
-| `Apify` | Executa o actor responsável pela coleta das vagas. |
-| `Normalizar Vagas` | Padroniza cargo, empresa, localização, descrição, URLs, modalidade e dados do recrutador. |
-| `Pré-Filtro` | Aplica regras determinísticas de senioridade, localização, cargo, experiência e palavras-chave. |
-| `If` | Encaminha somente vagas consideradas elegíveis. |
-| `Remove Duplicates` | Evita reprocessamento de oportunidades já encontradas. |
+| `Schedule Trigger` | Inicia o workflow automaticamente. |
+| `Gerar Pesquisas` | Cria diferentes buscas por área, cargo, modalidade e localização. |
+| `Executar Pesquisas` | Processa as buscas sequencialmente. |
+| `Apify` | Coleta as oportunidades. |
+| `Normalizar Vagas` | Padroniza os dados retornados. |
+| `Pré-Filtro` | Aplica regras determinísticas antes da IA. |
+| `If` | Encaminha apenas vagas elegíveis. |
+| `Remove Duplicates` | Evita reprocessar a mesma oportunidade. |
 
-### Normalização
+### Normalização dos dados
 
-O workflow cria uma representação consistente para dados que podem chegar em formatos diferentes.
+As vagas podem retornar informações em formatos diferentes.
 
-Entre os tratamentos estão:
+Por isso, antes da análise, o workflow padroniza:
 
-- limpeza de HTML da descrição;
-- URL canônica da vaga;
-- URL canônica do recrutador;
-- identificação da modalidade;
-- normalização do número de candidatos;
-- extração de recrutador ou job poster;
-- validação de campos obrigatórios;
-- geração de `dedupe_key`.
+- ID da vaga;
+- cargo;
+- empresa;
+- localização;
+- descrição;
+- modalidade;
+- data de publicação;
+- número de candidatos;
+- URL da oportunidade;
+- URL para candidatura;
+- dados do recrutador, quando disponíveis.
 
-### Pré-filtro determinístico
+Também é criada uma `dedupe_key` para identificar a mesma oportunidade em execuções futuras.
 
-Antes de consumir IA, a vaga recebe uma avaliação baseada em regras.
+### Pré-filtro
 
-São considerados sinais como:
+Antes de consumir IA, o workflow aplica regras em JavaScript.
+
+Entre os sinais analisados estão:
 
 - senioridade;
-- relação do cargo com a área pesquisada;
-- palavras-chave relevantes;
+- relação do cargo com a frente pesquisada;
+- palavras-chave;
 - modalidade;
 - localização;
-- anos de experiência exigidos;
-- cargos claramente fora do objetivo;
-- estágio fora da área de interesse.
+- experiência mínima solicitada;
+- áreas claramente incompatíveis;
+- quantidade mínima de sinais relevantes.
 
-Somente vagas acima do limite definido seguem para a classificação com IA.
+Vagas claramente incompatíveis são encerradas aqui.
+
+Isso evita enviar todo resultado encontrado para o modelo.
 
 ---
 
-## 4.2 Classificação por IA e persistência
+## 5.2 Comparação com o meu perfil
 
 <p align="center">
-  <img src="docs/02-ai-scoring-persistence.png" alt="Etapa de classificação por IA, cálculo de score e persistência" width="100%">
+  <img src="docs/02-ai-scoring-persistence.png" alt="Classificação por IA, score e persistência" width="100%">
 </p>
 
-Depois do pré-filtro, cada vaga é processada individualmente e comparada com um perfil estruturado do candidato.
+Depois do pré-filtro, cada vaga restante é comparada com um perfil estruturado.
 
-A descrição da vaga é tratada explicitamente como **dado para análise**, não como instrução para o modelo. Isso reduz o risco de comandos existentes no conteúdo da vaga interferirem no comportamento do workflow.
+A análise considera evidências reais relacionadas a:
 
-### Critérios de aderência
+- experiência profissional;
+- conhecimentos técnicos;
+- projetos;
+- formação;
+- certificações;
+- idiomas;
+- disponibilidade de localização e modalidade.
 
-| Critério | Peso máximo |
+Uma regra importante do projeto é não misturar tipos diferentes de evidência:
+
+```text
+Experiência profissional
+        ≠
+Projeto de portfólio
+        ≠
+Estudo / conhecimento
+```
+
+Se uma tecnologia aparece apenas em um projeto, ela pode demonstrar conhecimento prático, mas **não é tratada como experiência profissional**.
+
+Isso é importante para impedir que a análise infle artificialmente o match entre candidato e vaga.
+
+A descrição da vaga também é tratada explicitamente como **dado não confiável para análise**, e não como instrução para o modelo.
+
+---
+
+## 5.3 Score de compatibilidade
+
+Cada oportunidade recebe uma pontuação entre **0 e 100**.
+
+| Critério | Pontuação máxima |
 |---|---:|
 | Compatibilidade técnica | 35 |
 | Experiência e responsabilidades | 25 |
@@ -164,154 +273,298 @@ A descrição da vaga é tratada explicitamente como **dado para análise**, nã
 | Diferenciais | 10 |
 | **Total** | **100** |
 
-A IA retorna os componentes em **Structured Output**, e o cálculo final é realizado posteriormente por JavaScript.
+O modelo não devolve apenas um número final.
 
-Isso significa que o modelo não possui controle direto sobre a regra de classificação final.
+Ele devolve os componentes da avaliação em **Structured Output**.
 
-### Classificação
+Depois disso, o JavaScript valida e calcula o resultado:
 
-| Score | Classificação | Ação |
+```text
+LLM
+ ↓
+Componentes estruturados
+ ↓
+Validação
+ ↓
+JavaScript
+ ↓
+Score final
+ ↓
+Classificação
+ ↓
+Ação
+```
+
+### Faixas utilizadas
+
+| Score | Classificação | Tratamento |
 |---:|---|---|
-| 80–100 | `ALTA` | `PREPARAR_CANDIDATURA` |
-| 65–79 | `MEDIA` | `REVISAR` |
-| 50–64 | `BAIXA` | `REGISTRAR` |
-| 0–49 | `DESCARTAR` | `ARQUIVAR` |
+| 80–100 | `ALTA` | Preparar candidatura |
+| 65–79 | `MEDIA` | Revisar oportunidade |
+| 50–64 | `BAIXA` | Apenas registrar |
+| 0–49 | `DESCARTAR` | Arquivar |
 
-Quando existe um requisito realmente eliminatório, a vaga é classificada para descarte independentemente de uma boa pontuação em outros critérios.
+Também existem **requisitos eliminatórios**.
 
-### Persistência
+Uma vaga pode ter boa aderência em vários critérios e ainda assim ser descartada se houver um requisito obrigatório claramente incompatível com o meu perfil.
 
-As vagas classificadas são armazenadas em **PostgreSQL**.
+---
 
-O registro utiliza uma chave de deduplicação e `UPSERT`, permitindo atualizar uma vaga já conhecida sem criar registros duplicados.
+## 5.4 Persistência
 
-Entre os dados armazenados estão:
+Depois da classificação, as vagas são registradas em **PostgreSQL**.
 
+Entre os dados persistidos estão:
+
+- identificação da oportunidade;
 - cargo;
 - empresa;
-- localização;
-- modalidade;
-- fonte;
-- link;
+- localização e modalidade;
+- data de publicação;
 - origem da busca;
 - componentes do score;
 - score final;
 - classificação;
 - ação;
 - senioridade detectada;
-- indicação de requisito eliminatório;
+- requisito eliminatório;
 - resumo da aderência;
 - timestamps de controle.
 
+A persistência também utiliza `dedupe_key` e `ON CONFLICT`, permitindo atualizar uma vaga já conhecida sem criar registros duplicados.
+
 ---
 
-## 4.3 Análise detalhada e Telegram
+## 5.5 Segunda análise: transformar a vaga em uma candidatura acionável
 
 <p align="center">
-  <img src="docs/03-detailed-analysis-telegram.png" alt="Etapa de análise detalhada e envio das melhores vagas pelo Telegram" width="100%">
+  <img src="docs/03-detailed-analysis-routing.png" alt="Análise detalhada e roteamento das melhores oportunidades" width="100%">
 </p>
 
-A análise mais cara e detalhada não é executada para todas as oportunidades.
+A análise mais detalhada não é executada para todas as vagas.
 
-Somente vagas classificadas como **ALTA** ou **MEDIA** seguem para essa etapa.
+Somente oportunidades classificadas como **ALTA** ou **MEDIA** chegam a essa etapa.
 
-O segundo modelo recebe a vaga já classificada e produz informações úteis para a candidatura, sem recalcular o score.
+Para cada uma delas, o workflow gera informações úteis para a candidatura:
 
-### Saídas geradas
+- **pontos fortes** do meu perfil em relação à vaga;
+- **requisitos parcialmente atendidos**;
+- **requisitos ausentes / lacunas**;
+- **palavras-chave compatíveis**;
+- **estratégia para adaptar o currículo**;
+- **mensagem para o recrutador**;
+- **prompt para gerar uma versão direcionada do currículo**.
 
-- pontos fortes do candidato para a vaga;
-- requisitos parcialmente atendidos;
-- requisitos sem evidência;
-- palavras-chave compatíveis com ATS;
-- estratégia para adaptação do currículo;
-- mensagem curta para o recrutador;
-- prompt estruturado para geração posterior do currículo.
+O score não é recalculado aqui.
 
-O resultado é então enviado ao **Telegram**, priorizando as oportunidades que realmente merecem atenção.
+Essa etapa existe para transformar uma oportunidade priorizada em algo que eu consiga analisar e utilizar imediatamente.
 
 ---
 
-# 5. Decisões técnicas
+# 6. Como a oportunidade chega até mim
 
-## 5.1 IA somente depois do pré-filtro
+Essa é uma das partes mais importantes do projeto.
 
-O modelo não é utilizado para avaliar todo resultado encontrado.
+O Telegram funciona como a minha **caixa de entrada de oportunidades priorizadas**.
+
+Em vez de receber apenas:
+
+> “Encontrei uma vaga.”
+
+eu recebo contexto sobre **por que aquela vaga chegou até mim e como posso agir sobre ela**.
+
+## 6.1 Resumo da oportunidade
+
+<p align="center">
+  <img src="docs/04-telegram-opportunity-summary.png" alt="Resumo de uma vaga priorizada recebido pelo Telegram" width="68%">
+</p>
+
+A mensagem pode trazer:
+
+- classificação;
+- score de compatibilidade;
+- número de candidatos, quando informado;
+- palavras-chave relevantes;
+- estratégia para o currículo;
+- nome e cargo do recrutador, quando disponíveis;
+- perfil do recrutador;
+- mensagem sugerida para abordagem;
+- link direto da oportunidade.
+
+Os dados identificáveis da empresa foram ocultados nos screenshots públicos do repositório.
+
+---
+
+## 6.2 Apoio para adaptar o currículo
+
+Para vagas priorizadas, o workflow também estrutura o contexto necessário para adaptar meu currículo.
+
+<p align="center">
+  <img src="docs/05-telegram-resume-prompt-part-1.png" alt="Primeira parte do contexto para adaptação do currículo" width="48%">
+  <img src="docs/06-telegram-resume-prompt-part-2.png" alt="Segunda parte do contexto para adaptação do currículo" width="48%">
+</p>
+
+O material inclui:
+
+### Pontos fortes
+
+O que no meu histórico realmente conversa com aquela oportunidade.
+
+### Requisitos parciais
+
+Conhecimentos ou experiências transferíveis que ajudam, mas que não devem ser apresentados como atendimento completo ao requisito.
+
+### Requisitos ausentes
+
+Lacunas importantes que eu preciso considerar antes de me candidatar.
+
+### Palavras-chave
+
+Termos relevantes para a vaga que também possuem evidência no meu perfil.
+
+### Estratégia do currículo
+
+Uma orientação de:
+
+- qual experiência priorizar;
+- quais conhecimentos destacar;
+- qual projeto utilizar;
+- o que colocar em segundo plano;
+- como aproximar o currículo da oportunidade sem inventar experiência.
+
+### Recrutador
+
+Quando os dados existem, o workflow tenta identificar o profissional responsável e pode gerar uma mensagem curta para contato.
+
+---
+
+## 6.3 Do alerta à ação
+
+O resultado prático é encurtar o caminho entre encontrar uma vaga e conseguir tomar uma decisão sobre ela.
 
 ```text
-Regras determinísticas
-        ↓
-somente vagas elegíveis
-        ↓
-análise com IA
+Vaga encontrada
+      ↓
+Match analisado
+      ↓
+Pontos fortes e lacunas
+      ↓
+Palavras-chave
+      ↓
+Estratégia de currículo
+      ↓
+Recrutador, quando disponível
+      ↓
+Link da oportunidade
+      ↓
+Decisão e candidatura
 ```
 
-Isso reduz custo, latência e ruído.
+A automação não substitui minha decisão.
 
-## 5.2 Structured Output
+Ela remove etapas repetitivas e organiza o contexto que eu precisaria levantar manualmente.
 
-As duas etapas de IA utilizam schemas estruturados.
+---
 
-Isso permite:
+# 7. Decisões técnicas
+
+## 7.1 Regras antes da IA
+
+A IA não é utilizada como primeiro filtro.
+
+```text
+Resultados brutos
+      ↓
+Normalização
+      ↓
+Regras determinísticas
+      ↓
+Deduplicação
+      ↓
+IA
+```
+
+Isso reduz:
+
+- chamadas desnecessárias;
+- custo;
+- latência;
+- ruído.
+
+---
+
+## 7.2 Structured Output
+
+As análises de IA usam schemas estruturados.
+
+Com isso, o workflow consegue trabalhar com:
 
 - campos obrigatórios;
 - tipos previsíveis;
-- validação antes das próximas etapas;
-- menor dependência de texto livre;
-- processamento confiável pelo workflow.
+- validações;
+- arrays estruturados;
+- valores booleanos;
+- scores numéricos.
 
-## 5.3 Score calculado fora do modelo
-
-A IA fornece componentes da avaliação, mas o score final e a classificação são calculados por código.
-
-```text
-LLM
- ↓
-componentes estruturados
- ↓
-JavaScript
- ↓
-score + classificação + ação
-```
-
-## 5.4 Deduplicação em duas camadas
-
-O pipeline utiliza:
-
-1. `dedupe_key` gerada a partir do ID da vaga ou de atributos normalizados;
-2. restrição de unicidade no PostgreSQL com `ON CONFLICT`.
-
-Isso reduz duplicações tanto durante a execução quanto na persistência.
-
-## 5.5 Segunda análise apenas para vagas relevantes
-
-A geração de estratégia de candidatura acontece somente depois da classificação.
-
-Assim, vagas de baixa aderência não consomem processamento detalhado.
-
-## 5.6 Proteção contra instruções na descrição da vaga
-
-O prompt de avaliação define a descrição como conteúdo não confiável utilizado somente para extração de requisitos.
-
-Instruções presentes dentro da descrição devem ser ignoradas.
+A saída do modelo deixa de ser apenas texto livre e passa a fazer parte de um pipeline de dados.
 
 ---
 
-# 6. Tecnologias
+## 7.3 Score final calculado por código
 
-| Tecnologia | Uso no projeto |
+A IA avalia dimensões específicas.
+
+A regra final de score, classificação e ação permanece no código.
+
+Isso deixa o comportamento mais previsível e auditável.
+
+---
+
+## 7.4 Deduplicação em mais de uma camada
+
+O projeto utiliza:
+
+1. uma `dedupe_key`;
+2. remoção de duplicidades entre execuções;
+3. unicidade no PostgreSQL;
+4. `UPSERT` para oportunidades já existentes.
+
+---
+
+## 7.5 Processamento detalhado apenas quando necessário
+
+A segunda chamada de IA só acontece quando a vaga já foi classificada como média ou alta aderência.
+
+Assim, o processamento mais detalhado é concentrado nas oportunidades que realmente podem chegar até mim.
+
+---
+
+## 7.6 Proteção contra instruções presentes na vaga
+
+A descrição da oportunidade é conteúdo externo.
+
+Por isso, o prompt deixa explícito que instruções encontradas dentro da descrição não devem ser seguidas.
+
+O conteúdo é utilizado apenas para identificar informações da vaga.
+
+---
+
+# 8. Tecnologias
+
+| Tecnologia | Aplicação |
 |---|---|
-| **n8n** | Orquestração do workflow |
-| **JavaScript** | Normalização, pré-filtro, validação e cálculo de score |
-| **OpenAI** | Avaliação de aderência e análise detalhada |
-| **Apify** | Coleta de oportunidades |
-| **PostgreSQL** | Persistência e histórico das vagas |
-| **Telegram** | Entrega das oportunidades priorizadas |
-| **Structured Output** | Contratos previsíveis para respostas da IA |
+| **n8n** | Orquestração do pipeline |
+| **JavaScript** | Normalização, filtros, validações e scoring |
+| **OpenAI** | Comparação de aderência e análise detalhada |
+| **Apify** | Coleta das oportunidades |
+| **PostgreSQL** | Persistência e histórico |
+| **Telegram** | Entrega das vagas priorizadas |
+| **Structured Output** | Contratos estruturados para respostas da IA |
 | **Git / GitHub** | Versionamento e documentação |
 
 ---
 
-# 7. Estrutura do repositório
+# 9. Estrutura do repositório
 
 ```text
 n8n-ai-job-search-automation/
@@ -319,124 +572,160 @@ n8n-ai-job-search-automation/
 ├── LICENSE
 ├── .gitignore
 ├── .env.example
+│
 ├── workflow/
 │   └── n8n-ai-job-search-public.json
+│
 ├── database/
 │   └── schema.sql
+│
 └── docs/
     ├── workflow-overview.png
     ├── 01-job-discovery-filtering.png
     ├── 02-ai-scoring-persistence.png
-    └── 03-detailed-analysis-telegram.png
+    ├── 03-detailed-analysis-routing.png
+    ├── 04-telegram-opportunity-summary.png
+    ├── 05-telegram-resume-prompt-part-1.png
+    └── 06-telegram-resume-prompt-part-2.png
 ```
 
 ---
 
-# 8. Como executar
+# 10. Como executar
 
 ## Pré-requisitos
 
-É necessário possuir:
+Para reproduzir o workflow são necessários:
 
-- uma instância do n8n;
-- conta no Apify;
-- credencial de modelo OpenAI;
+- n8n;
+- Apify;
+- OpenAI;
 - PostgreSQL;
-- bot do Telegram.
+- Telegram Bot.
 
-## Configuração
+## Instalação
 
-1. Clone o repositório.
+Clone o repositório:
 
 ```bash
 git clone https://github.com/matheusmendesgestaopessoal/n8n-ai-job-search-automation.git
+cd n8n-ai-job-search-automation
 ```
 
-2. Crie a estrutura do banco usando:
+Crie a estrutura do banco usando:
 
 ```text
 database/schema.sql
 ```
 
-3. Importe no n8n:
+No n8n, importe:
 
 ```text
 workflow/n8n-ai-job-search-public.json
 ```
 
-4. Configure suas próprias credenciais no n8n para:
+Depois configure suas próprias credenciais para:
 
-```text
-Apify
-OpenAI
-PostgreSQL
-Telegram
-```
+- Apify;
+- OpenAI;
+- PostgreSQL;
+- Telegram.
 
-5. Substitua os dados de exemplo do perfil do candidato.
+Substitua também:
 
-6. Configure o `chat_id` do Telegram.
+- perfil do candidato;
+- `chat_id`;
+- critérios de busca;
+- localidades;
+- cargos;
+- limites e regras que desejar personalizar.
 
-7. Ajuste as pesquisas, cargos, localidades e critérios de acordo com o objetivo desejado.
+Faça uma execução manual antes de ativar o agendamento.
 
-8. Faça uma execução manual antes de ativar o agendamento.
-
-> Nenhuma credencial real é versionada neste repositório.
+> A versão pública do workflow não inclui credenciais reais nem meu perfil completo.
 
 ---
 
-# 9. O que este projeto demonstra
+# 11. O que este projeto demonstra
 
-Mais do que conectar nodes no n8n, este projeto explora decisões comuns em automações orientadas por dados e IA:
+Este projeto reúne conceitos de **automação, dados e IA aplicada** em um problema real.
 
-- decomposição de um problema real em etapas;
-- integração com APIs e serviços externos;
-- normalização de dados semiestruturados;
-- regras determinísticas antes de IA;
+Entre os pontos trabalhados estão:
+
+- automação de processo ponta a ponta;
+- integração entre serviços;
+- tratamento de dados semiestruturados;
+- normalização;
+- regras determinísticas;
+- JavaScript em workflows;
 - prompt engineering;
-- proteção contra conteúdo não confiável;
 - structured outputs;
+- validação de saída de LLM;
 - scoring multicritério;
-- deduplicação e idempotência;
-- persistência relacional;
+- deduplicação;
+- idempotência;
+- persistência em PostgreSQL;
 - roteamento condicional;
-- otimização de chamadas de IA;
-- notificações automáticas.
+- controle de chamadas de IA;
+- análise orientada à ação.
 
 ---
 
-# 10. Próximas evoluções
+# 12. Próximas evoluções
 
-- dashboard para acompanhamento das oportunidades;
-- histórico do processo seletivo;
-- métricas de candidaturas e respostas;
-- acompanhamento de mudança de status;
-- suporte a múltiplos perfis de candidato;
+Algumas evoluções que podem ampliar o projeto:
+
+- dashboard de oportunidades e candidaturas;
+- acompanhamento do status dos processos seletivos;
+- métricas de candidaturas, entrevistas e respostas;
+- histórico de evolução dos scores;
 - novas fontes de vagas;
-- geração automatizada de currículo com revisão humana;
-- painel para configuração das regras de busca;
-- observabilidade de custo e uso dos modelos.
+- múltiplos perfis de busca;
+- geração de currículo integrada com revisão humana;
+- painel de configuração dos critérios;
+- observabilidade de custo e consumo de modelos.
 
 ---
 
-# 11. Segurança e uso responsável
+# 13. Segurança e uso responsável
 
-A versão pública do workflow não contém credenciais reais.
+A versão pública do projeto foi preparada para portfólio.
 
-Ao utilizar o projeto:
+Não são versionados:
 
-- configure tokens e credenciais somente no credential manager do n8n;
-- não versione secrets;
-- não publique identificadores privados;
-- revise os termos e políticas das plataformas utilizadas para coleta de dados;
-- mantenha revisão humana antes de enviar candidaturas ou mensagens.
+- API keys;
+- tokens;
+- senhas;
+- credenciais do n8n;
+- `chat_id` real;
+- perfil pessoal completo utilizado pela automação.
+
+Os screenshots de Telegram também foram anonimizados para evitar exposição de informações identificáveis da empresa analisada.
+
+Ao reproduzir o projeto, cada usuário deve configurar suas próprias credenciais e revisar os termos de uso das plataformas envolvidas.
 
 ---
 
-## Autor
+## Sobre mim
 
-**Matheus Mendes**
+### Matheus Mendes
 
-Projeto desenvolvido como parte de um portfólio de automação, dados e inteligência artificial.
+Estudante de **Análise e Desenvolvimento de Sistemas (ADS)**, com foco em **Análise de Dados, Business Intelligence, Automação e aplicações de Inteligência Artificial**.
 
-[GitHub](https://github.com/matheusmendesgestaopessoal)
+Minha experiência profissional envolve **análise e controle de dados operacionais, indicadores/KPIs, relatórios em Excel, planejamento, faturamento, conferência de informações e melhoria de processos**.
+
+Paralelamente, venho desenvolvendo projetos para aprofundar conhecimentos em **Dados, BI, Engenharia de Dados e Automação**, conectando análise técnica com problemas reais de negócio.
+
+**Tecnologias e ferramentas**
+
+`Python` · `SQL` · `PostgreSQL` · `MySQL` · `Power BI` · `Excel` · `ETL` · `Data Warehouse` · `Modelagem Dimensional` · `n8n` · `APIs` · `Git/GitHub` · `IA Generativa`
+
+**Certificações**
+
+`CPA — ANBIMA` · `C-Pro R — ANBIMA`
+
+**Interesses profissionais**
+
+`Dados` · `Business Intelligence` · `Automação` · `IA aplicada a processos` · `Engenharia de Dados`
+
+[LinkedIn](https://www.linkedin.com/in/matheusmendes-finan%C3%A7as/) · [GitHub](https://github.com/matheusmendesgestaopessoal)
