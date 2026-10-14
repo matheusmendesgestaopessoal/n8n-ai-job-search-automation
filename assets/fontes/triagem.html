@@ -10,12 +10,12 @@
   .bloco{padding:24px 26px}
   .bloco h3{font-size:18px;font-weight:700;margin-bottom:4px}
   .bloco .desc{font-size:13.5px;color:var(--grafite-2);margin-bottom:20px}
-  .degrau{display:grid;grid-template-columns:180px 1fr 70px;align-items:center;gap:14px;margin-top:12px}
+  .degrau{display:grid;grid-template-columns:190px 1fr 90px;align-items:center;gap:14px;margin-top:12px}
   .degrau .r{font-size:14px;font-weight:600}
   .degrau .r small{display:block;font-size:12px;font-weight:400;color:var(--grafite-2)}
   .barra{height:34px;border-radius:8px;background:var(--azul-fundo);overflow:hidden;display:flex}
   .barra i{display:block;height:100%}
-  .degrau .v{font-size:22px;font-weight:800;text-align:right;letter-spacing:-.02em}
+  .degrau .v{font-size:22px;white-space:nowrap;font-weight:800;text-align:right;letter-spacing:-.02em}
   .pilha{display:flex;height:46px;border-radius:10px;overflow:hidden;margin-top:24px}
   .pilha div{display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff}
   .chaves{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
@@ -33,16 +33,17 @@
 <body>
 <div class="topo">
   <span class="lbl">Resultado · 29/09 a 11/10/2026</span>
-  <h1>De 54 vagas registradas a 30 alertas</h1>
+  <h1>De centenas de vagas a 30 alertas</h1>
   <p>Histórico real da tabela <code>vagas</code> em 12 dias de execução, recalculado com <code>codigo/analises/diagnostico.py</code>. Empresas e textos das vagas não são publicados.</p>
 </div>
 <div class="grade">
   <div class="card bloco">
-    <h3>O funil depois do pré-filtro</h3>
-    <p class="desc">A tabela guarda só as vagas que passaram pelo pré-filtro e pela deduplicação.</p>
-    <div class="degrau"><span class="r">Registradas<small>passaram pelo pré-filtro</small></span><div class="barra"><i style="width:100%;background:var(--azul-selecao)"></i></div><span class="v">54</span></div>
-    <div class="degrau"><span class="r">Com análise completa<small>sem 1 linha vazia e 7 da 1ª versão</small></span><div class="barra"><i style="width:85.2%;background:var(--azul-pasta)"></i></div><span class="v">46</span></div>
-    <div class="degrau"><span class="r">Chegaram ao Telegram<small>ALTA + MÉDIA</small></span><div class="barra"><i style="width:55.6%;background:var(--azul)"></i></div><span class="v">30</span></div>
+    <h3>O funil da triagem</h3>
+    <p class="desc">A busca trouxe centenas de vagas. As descartadas no pré-filtro não são gravadas: a tabela guarda só as que seguiram para a IA.</p>
+    <div class="degrau"><span class="r">Coletadas pela busca<small>contagem no histórico do n8n</small></span><div class="barra" style="background:repeating-linear-gradient(135deg,#EEF4FF 0 8px,#E2EBFB 8px 16px)"></div><span class="v" style="font-size:16px">centenas</span></div>
+    <div class="degrau"><span class="r">Passaram pelo pré-filtro<small>seguiram para a IA e foram gravadas</small></span><div class="barra"><i style="width:30%;background:var(--azul-selecao)"></i></div><span class="v">54</span></div>
+    <div class="degrau"><span class="r">Com análise completa<small>sem 1 linha vazia e 7 da 1ª versão</small></span><div class="barra"><i style="width:25.6%;background:var(--azul-pasta)"></i></div><span class="v">46</span></div>
+    <div class="degrau"><span class="r">Chegaram ao Telegram<small>ALTA + MÉDIA</small></span><div class="barra"><i style="width:16.7%;background:var(--azul)"></i></div><span class="v">30</span></div>
 
     <div class="pilha">
       <div style="width:28.3%;background:#00995A">13</div>

@@ -34,7 +34,7 @@ Na minha busca por uma vaga em dados, a maior parte do tempo não ia para as can
 Construí um workflow no **n8n** que faz essa triagem todo dia: busca vagas, descarta por regra o que não combina, usa IA para comparar cada vaga com o meu perfil, calcula um **score de 0 a 100 em código**, guarda o histórico no **PostgreSQL** e me avisa no **Telegram** só das vagas de alta e média aderência, já com o material para me candidatar.
 
 > **Pergunta:** como reduzir a busca só às vagas que merecem atenção, sem inflar a minha aderência e sem perder as que combinam comigo?
-> **Resultado em 12 dias de uso real:** 46 vagas analisadas, **30 chegaram ao Telegram** (13 de alta e 17 de média aderência) e a regra de requisito eliminatório evitou 9 alertas inúteis. Todos os scores conferidos batem com as regras do código. [Análise completa](docs/05_analise_e_recomendacoes.md)
+> **Resultado em 12 dias de uso real:** centenas de vagas coletadas, a maioria descartada por regra antes da IA; 46 passaram pela análise completa e **30 chegaram ao Telegram** (13 de alta e 17 de média aderência) e a regra de requisito eliminatório evitou 9 alertas inúteis. Todos os scores conferidos batem com as regras do código. [Análise completa](docs/05_analise_e_recomendacoes.md)
 
 O foco deste README é **como foi feito**: as ferramentas, por que cada uma e as decisões técnicas no caminho. A história contada visualmente está na [**apresentação no meu portfólio**](https://matheusmendes.site/projetos/automacao-vagas).
 
@@ -149,7 +149,7 @@ A segunda chamada de IA ([análise detalhada](workflow/prompts/02_analisar_vaga_
 
 **Por que Python:** uma automação também precisa ser avaliada. Exportei a tabela `vagas` e escrevi um diagnóstico que mede o resultado e confere se o score gravado respeita as regras do código.
 
-![De 54 vagas registradas a 30 alertas](assets/triagem.png)
+![De centenas de vagas a 30 alertas](assets/triagem.png)
 
 | O que [`diagnostico.py`](codigo/analises/diagnostico.py) mede | Resultado |
 |---|---|

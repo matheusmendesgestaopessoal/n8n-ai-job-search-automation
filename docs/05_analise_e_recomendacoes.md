@@ -1,6 +1,6 @@
 # Análise e Recomendações · Automação de vagas
 
-**Período:** 29/09 a 11/10/2026 (12 dias com execução) · **Universo:** 54 vagas registradas, 46 com análise completa
+**Período:** 29/09 a 11/10/2026 (12 dias com execução) · **Universo:** centenas de vagas coletadas; 54 passaram pelo pré-filtro e foram registradas, 46 com análise completa
 **Autor:** Matheus Mendes
 
 Todos os números podem ser recalculados com `python codigo/analises/diagnostico.py`.
@@ -25,7 +25,8 @@ Todos os números podem ser recalculados com `python codigo/analises/diagnostico
 
 | Indicador | Valor |
 |---|---:|
-| Vagas registradas · com análise completa | 54 · 46 |
+| Vagas coletadas pela busca | centenas (as descartadas no pré-filtro não são gravadas) |
+| Passaram pelo pré-filtro e foram registradas · com análise completa | 54 · 46 |
 | ALTA (preparar candidatura) | 13 (28%) |
 | MÉDIA (revisar) | 17 (37%) |
 | BAIXA (só registrar) | 1 (2%) |
@@ -111,7 +112,7 @@ foi considerado obrigatório, na outra não.
 ---
 
 ## Premissas e limitações
-- 46 vagas em 12 dias é uma amostra pequena e concentrada em uma busca (ver Cartão 1).
+- As 46 vagas com análise completa são as que passaram pelo pré-filtro, não tudo o que a busca trouxe; ainda assim é uma amostra pequena e concentrada em uma busca (ver Cartão 1).
 - As lacunas foram contadas por termos nos resumos escritos pela IA: indicam tendência, não uma medida exata.
 - A tabela não guarda as vagas descartadas no pré-filtro, então o funil completo (busca → pré-filtro → IA) depende do histórico do n8n.
 - O tempo economizado não foi medido.
