@@ -1,0 +1,44 @@
+{
+  "type": "object",
+  "properties": {
+    "pontos_fortes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requisitos_parciais": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requisitos_ausentes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "palavras_chave_ats": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "estrategia_curriculo": {
+      "type": "string"
+    },
+    "mensagem_recrutador": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "pontos_fortes",
+    "requisitos_parciais",
+    "requisitos_ausentes",
+    "palavras_chave_ats",
+    "estrategia_curriculo",
+    "mensagem_recrutador"
+  ],
+  "additionalProperties": false
+}

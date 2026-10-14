@@ -19,7 +19,7 @@ E o fluxo não termina no score.
 Quando uma oportunidade chega até mim, eu também recebo informações que ajudam a decidir e preparar a candidatura: **link da vaga, palavras-chave, pontos fortes, lacunas, estratégia de currículo, dados do recrutador quando disponíveis e uma mensagem sugerida para contato**.
 
 <p align="center">
-  <img src="docs/workflow-overview.png" alt="Workflow completo da automação de busca e priorização de vagas" width="100%">
+  <img src="assets/prints/workflow-overview.png" alt="Workflow completo da automação de busca e priorização de vagas" width="100%">
 </p>
 
 ---
@@ -166,7 +166,7 @@ A IA não precisa analisar todas as vagas encontradas. Primeiro, regras objetiva
 ## 5.1 Busca, normalização e pré-filtro
 
 <p align="center">
-  <img src="docs/01-job-discovery-filtering.png" alt="Busca, normalização e pré-filtro" width="100%">
+  <img src="assets/prints/01-job-discovery-filtering.png" alt="Busca, normalização e pré-filtro" width="100%">
 </p>
 
 A primeira parte do workflow é responsável por transformar resultados brutos de busca em vagas padronizadas e elegíveis para análise.
@@ -226,7 +226,7 @@ Isso evita enviar todo resultado encontrado para o modelo.
 ## 5.2 Comparação com o meu perfil
 
 <p align="center">
-  <img src="docs/02-ai-scoring-persistence.png" alt="Classificação por IA, score e persistência" width="100%">
+  <img src="assets/prints/02-ai-scoring-persistence.png" alt="Classificação por IA, score e persistência" width="100%">
 </p>
 
 Depois do pré-filtro, cada vaga restante é comparada com um perfil estruturado.
@@ -338,7 +338,7 @@ A persistência também utiliza `dedupe_key` e `ON CONFLICT`, permitindo atualiz
 ## 5.5 Segunda análise: transformar a vaga em uma candidatura acionável
 
 <p align="center">
-  <img src="docs/03-detailed-analysis-routing.png" alt="Análise detalhada e roteamento das melhores oportunidades" width="100%">
+  <img src="assets/prints/03-detailed-analysis-routing.png" alt="Análise detalhada e roteamento das melhores oportunidades" width="100%">
 </p>
 
 A análise mais detalhada não é executada para todas as vagas.
@@ -376,7 +376,7 @@ eu recebo contexto sobre **por que aquela vaga chegou até mim e como posso agir
 ## 6.1 Resumo da oportunidade
 
 <p align="center">
-  <img src="docs/04-telegram-opportunity-summary.png" alt="Resumo de uma vaga priorizada recebido pelo Telegram" width="68%">
+  <img src="assets/prints/04-telegram-opportunity-summary.png" alt="Resumo de uma vaga priorizada recebido pelo Telegram" width="68%">
 </p>
 
 A mensagem pode trazer:
@@ -400,8 +400,8 @@ Os dados identificáveis da empresa foram ocultados nos screenshots públicos do
 Para vagas priorizadas, o workflow também estrutura o contexto necessário para adaptar meu currículo.
 
 <p align="center">
-  <img src="docs/05-telegram-resume-prompt-part-1.png" alt="Primeira parte do contexto para adaptação do currículo" width="48%">
-  <img src="docs/06-telegram-resume-prompt-part-2.png" alt="Segunda parte do contexto para adaptação do currículo" width="48%">
+  <img src="assets/prints/05-telegram-resume-prompt-part-1.png" alt="Primeira parte do contexto para adaptação do currículo" width="48%">
+  <img src="assets/prints/06-telegram-resume-prompt-part-2.png" alt="Segunda parte do contexto para adaptação do currículo" width="48%">
 </p>
 
 O material inclui:
@@ -615,7 +615,7 @@ cd n8n-ai-job-search-automation
 Crie a estrutura do banco usando:
 
 ```text
-database/schema.sql
+sql/01_schema_vagas.sql
 ```
 
 No n8n, importe:
@@ -728,4 +728,4 @@ Paralelamente, venho desenvolvendo projetos para aprofundar conhecimentos em **D
 
 `Dados` · `Business Intelligence` · `Automação` · `IA aplicada a processos` · `Engenharia de Dados`
 
-[LinkedIn](https://www.linkedin.com/in/matheusmendes-finan%C3%A7as/) · [GitHub](https://github.com/matheusmendesgestaopessoal)
+[LinkedIn](https://www.linkedin.com/in/matheusmendes-dados) · [GitHub](https://github.com/matheusmendesgestaopessoal)

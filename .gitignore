@@ -18,3 +18,11 @@ Thumbs.db
 # Temporary files
 tmp/
 temp/
+
+# Exportação da tabela vagas (nomes de empresas e perfil pessoal): não versionar
+dados/*
+!dados/README.md
+
+# Python
+venv/
+__pycache__/

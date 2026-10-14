@@ -1,0 +1,52 @@
+{
+  "type": "object",
+  "properties": {
+    "score_tecnico": {
+      "type": "number"
+    },
+    "score_experiencia": {
+      "type": "number"
+    },
+    "score_senioridade": {
+      "type": "number"
+    },
+    "score_modalidade_localizacao": {
+      "type": "number"
+    },
+    "score_formacao": {
+      "type": "number"
+    },
+    "score_diferenciais": {
+      "type": "number"
+    },
+    "eliminatorio": {
+      "type": "boolean"
+    },
+    "motivo_eliminatorio": {
+      "type": "string"
+    },
+    "frente_sugerida": {
+      "type": "string"
+    },
+    "senioridade_detectada": {
+      "type": "string"
+    },
+    "resumo_aderencia": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "score_tecnico",
+    "score_experiencia",
+    "score_senioridade",
+    "score_modalidade_localizacao",
+    "score_formacao",
+    "score_diferenciais",
+    "eliminatorio",
+    "motivo_eliminatorio",
+    "frente_sugerida",
+    "senioridade_detectada",
+    "resumo_aderencia"
+  ],
+  "additionalProperties": true
+}
