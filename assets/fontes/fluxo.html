@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Fluxo</title>
+<link rel="stylesheet" href="diagramas.css">
+<style>
+  body{width:1600px;padding-bottom:40px}
+  .etapas{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;padding:30px 48px 0;position:relative}
+  .etapa{padding:0;overflow:hidden;display:flex;flex-direction:column}
+  .etapa .cab{padding:14px 16px;background:var(--c);color:var(--t,#fff)}
+  .etapa .cab span{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.85}
+  .etapa .cab b{font-size:18px}
+  .no{padding:12px 16px;border-top:1px solid var(--divisor)}
+  .no:first-of-type{border-top:0}
+  .no h4{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:14.5px;font-weight:700}
+  .no h4 .pilula{font-size:11px;padding:2px 8px;flex:none}
+  .no p{font-size:13px;line-height:1.45;color:var(--texto);margin-top:4px}
+  .no .chip{margin-top:8px;font-size:12.5px;padding:4px 10px}
+  .no .chip .logo{width:15px;height:15px}
+  .rodape{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:18px 48px 0}
+  .rodape .card{padding:16px 18px;font-size:13.5px;line-height:1.5;color:var(--texto)}
+  .rodape b{display:block;font-size:15px;color:var(--grafite);margin-bottom:4px}
+</style>
+</head>
+<body>
+<div class="topo">
+  <span class="lbl">Arquitetura · workflow n8n (29 nós)</span>
+  <h1>Da busca ao alerta, em 5 etapas</h1>
+  <p>A IA só entra depois que regras baratas já descartaram o que não combina, e nunca decide sozinha: ela devolve notas num formato fixo, e o score, a classificação e a ação são calculados em código.</p>
+  <div class="legenda">
+    <span><span class="pilula p-cod">código</span>regra em JavaScript ou SQL, resultado previsível</span>
+    <span><span class="pilula p-ia">IA</span>leitura do texto da vaga, com saída estruturada</span>
+    <span><span class="pilula p-cinza">serviço</span>integração externa</span>
+  </div>
+</div>
+<div class="etapas">
+  <div class="card etapa" style="--c:#0F4FD1">
+    <div class="cab"><span>Etapa 1</span><b>Buscar</b></div>
+    <div class="no"><h4>Agendamento <span class="pilula p-cinza">serviço</span></h4><p>Uma execução por dia, ao meio-dia.</p></div>
+    <div class="no"><h4>Gerar pesquisas <span class="pilula p-cod">código</span></h4><p>10 buscas: dados e BI, operações, financeiro e estágio, em remoto, híbrido em SP e presencial na Baixada Santista.</p></div>
+    <div class="no"><h4>Coletar vagas <span class="pilula p-cinza">serviço</span></h4><p>Vagas do LinkedIn publicadas nas últimas 24 horas, via Apify.</p></div>
+  </div>
+  <div class="card etapa" style="--c:#1A6BF5">
+    <div class="cab"><span>Etapa 2</span><b>Preparar e filtrar</b></div>
+    <div class="no"><h4>Normalizar <span class="pilula p-cod">código</span></h4><p>Formato único, modalidade detectada e chave única por vaga.</p></div>
+    <div class="no"><h4>Pré-filtro <span class="pilula p-cod">código</span></h4><p>Pontos por cargo, palavras-chave e local. Sênior, área fora do alvo ou 7+ anos de experiência: descarte sem gastar IA.</p></div>
+    <div class="no"><h4>Remover repetidas <span class="pilula p-cod">código</span></h4><p>Guarda as últimas 10.000 chaves e ignora vagas já vistas.</p></div>
+  </div>
+  <div class="card etapa" style="--c:#5AB0FF;--t:#0B2E66">
+    <div class="cab"><span>Etapa 3</span><b>Classificar</b></div>
+    <div class="no"><h4>Comparar com o perfil <span class="pilula p-ia">IA</span></h4><p>6 notas, requisito eliminatório e resumo. Experiência profissional, projeto e estudo são avaliados separadamente.</p></div>
+    <div class="no"><h4>Calcular score <span class="pilula p-cod">código</span></h4><p>Soma das notas, teto de 49 com eliminatório, faixa e ação.</p></div>
+  </div>
+  <div class="card etapa" style="--c:#111111">
+    <div class="cab"><span>Etapa 4</span><b>Registrar</b></div>
+    <div class="no"><h4>Gravar no banco <span class="pilula p-cod">código</span></h4><p><code>INSERT … ON CONFLICT DO UPDATE</code>: a vaga que reaparece é atualizada, não duplicada.</p><span class="chip"><i class="logo" data-logo="postgresql" data-cor="#4169E1"></i>PostgreSQL</span></div>
+    <div class="no"><h4>Separar por faixa <span class="pilula p-cod">código</span></h4><p>Só ALTA e MÉDIA seguem. BAIXA e DESCARTAR ficam só no histórico.</p></div>
+  </div>
+  <div class="card etapa" style="--c:#00995A">
+    <div class="cab"><span>Etapa 5</span><b>Entregar</b></div>
+    <div class="no"><h4>Análise detalhada <span class="pilula p-ia">IA</span></h4><p>Pontos fortes, lacunas, palavras-chave, estratégia de currículo e mensagem ao recrutador.</p></div>
+    <div class="no"><h4>Alerta <span class="pilula p-cinza">serviço</span></h4><p>Mensagem diferente para ALTA e MÉDIA, com o link e um prompt para adaptar o currículo.</p><span class="chip"><i class="logo" data-logo="telegram" data-cor="#26A5E4"></i>Telegram</span></div>
+  </div>
+</div>
+<div class="rodape">
+  <div class="card"><b>Mais barato</b>A IA é chamada só depois do pré-filtro e da deduplicação, e a análise mais longa só para ALTA e MÉDIA.</div>
+  <div class="card"><b>Previsível</b>A IA responde num formato fixo (Structured Output). Se faltar uma nota, o fluxo para em vez de gravar um score errado.</div>
+  <div class="card"><b>Seguro</b>A descrição da vaga é tratada como dado, nunca como instrução. Credenciais ficam no n8n, fora do workflow público.</div>
+</div>
+</body>
+</html>

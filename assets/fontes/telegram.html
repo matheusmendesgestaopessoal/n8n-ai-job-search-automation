@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Telegram</title>
+<link rel="stylesheet" href="diagramas.css">
+<style>
+  body{width:1600px;padding-bottom:40px}
+  .grade{display:grid;grid-template-columns:560px 1fr;gap:28px;padding:30px 48px 0;align-items:start}
+  .chat{padding:18px;background:#DCE8F5;border-radius:22px;border:1px solid var(--borda)}
+  .chat .topo-chat{display:flex;align-items:center;gap:10px;padding:4px 6px 14px;font-size:14px;font-weight:700}
+  .chat .topo-chat .logo{width:28px;height:28px}
+  .chat .topo-chat small{display:block;font-weight:400;color:var(--grafite-2);font-size:12px}
+  .bolha{position:relative;background:#fff;border-radius:16px 16px 16px 4px;padding:16px 18px 26px;font-size:14px;line-height:1.5;color:#1b1b1b;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+  .bolha p{margin-top:10px}
+  .bolha p:first-child{margin-top:0}
+  .bolha .t{font-weight:700}
+  .bolha .link{color:#1A6BF5}
+  .bolha .hora{position:absolute;right:12px;bottom:6px;font-size:11px;color:#9AA0A6}
+  .marc{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--azul);color:#fff;font-size:11px;font-weight:800;margin-right:6px;vertical-align:1px}
+  .itens{display:grid;gap:12px}
+  .item{display:grid;grid-template-columns:30px 1fr;gap:12px;padding:16px 18px}
+  .item h4{font-size:15.5px;font-weight:700}
+  .item p{font-size:13.5px;line-height:1.5;color:var(--texto);margin-top:3px}
+  .aviso{margin-top:14px;font-size:12.5px;color:var(--grafite-2)}
+</style>
+</head>
+<body>
+<div class="topo">
+  <span class="lbl">Entrega · alerta no Telegram</span>
+  <h1>O alerta já chega com o próximo passo</h1>
+  <p>Para ALTA e MÉDIA, uma segunda chamada de IA prepara o material de candidatura. Recebo o link da vaga e o que fazer com ela, sem abrir o anúncio para decidir.</p>
+</div>
+<div class="grade">
+  <div>
+    <div class="chat">
+      <div class="topo-chat"><i class="logo" data-logo="telegram" data-cor="#26A5E4"></i><div>Bot de vagas<small>mensagem automática do n8n</small></div></div>
+      <div class="bolha">
+        <p class="t"><span class="marc">1</span>🟢🟢🟢 VAGA DE ALTA PRIORIDADE — 90/100<br>Candidatos: 85</p>
+        <p><span class="marc">2</span><b>PALAVRAS-CHAVE ATS</b> Análise de dados • Excel • Indicadores • KPIs • Relatórios • Qualidade de dados • Power BI • SQL</p>
+        <p><span class="marc">3</span><b>ESTRATÉGIA DO CURRÍCULO</b> Abrir o resumo com coleta, validação e organização de dados e relatórios em Excel. Na experiência, destacar indicadores e melhoria de processos. Apresentar Power BI e SQL pelos projetos, sem tratá-los como experiência profissional.</p>
+        <p><span class="marc">4</span><b>RECRUTADOR</b> Nome: Não informado<br>Cargo: Não informado</p>
+        <p><span class="marc">5</span><b>MENSAGEM PARA O RECRUTADOR</b> Olá! Tenho interesse na vaga de Assistente de Dados. Tenho experiência com relatórios e indicadores em Excel e conferência de dados, e desenvolvo projetos com SQL e Power BI.</p>
+        <p><b>VAGA</b> <span class="link">linkedin.com/jobs/view/…</span></p>
+        <span class="hora">12:00</span>
+      </div>
+    </div>
+    <p class="aviso">Exemplo a partir de uma vaga ALTA real (score 90, 85 candidatos): textos reescritos com base no resumo de aderência, empresa e link omitidos.</p>
+  </div>
+  <div class="itens">
+    <div class="card item"><span class="num">1</span><div><h4>Prioridade e concorrência</h4><p>Faixa e score calculados em código, e o número de candidatos para decidir rápido. ALTA e MÉDIA têm mensagens diferentes.</p></div></div>
+    <div class="card item"><span class="num">2</span><div><h4>Palavras-chave da vaga</h4><p>Os termos que o filtro automático de currículos (ATS) deve encontrar, escolhidos entre os que eu realmente tenho.</p></div></div>
+    <div class="card item"><span class="num">3</span><div><h4>Estratégia do currículo</h4><p>O que colocar primeiro e o que deixar em segundo plano. A regra continua valendo: projeto não vira experiência profissional.</p></div></div>
+    <div class="card item"><span class="num">4</span><div><h4>Recrutador</h4><p>Nome, cargo e perfil quando o anúncio traz, para o contato ir direto à pessoa certa.</p></div></div>
+    <div class="card item"><span class="num">5</span><div><h4>Mensagem pronta</h4><p>Um texto curto para enviar ao recrutador. Logo depois chega uma segunda mensagem com o prompt para adaptar o currículo mestre à vaga.</p></div></div>
+  </div>
+</div>
+</body>
+</html>

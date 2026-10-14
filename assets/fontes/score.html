@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Score</title>
+<link rel="stylesheet" href="diagramas.css">
+<style>
+  body{width:1600px;padding-bottom:40px}
+  .grade{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;padding:30px 48px 0}
+  .bloco{padding:24px 26px}
+  .bloco h3{font-size:18px;font-weight:700;margin-bottom:4px}
+  .bloco .desc{font-size:13.5px;color:var(--grafite-2);margin-bottom:18px}
+  .crit{display:grid;grid-template-columns:250px 1fr 92px;align-items:center;gap:14px;margin-top:14px}
+  .crit .r{font-size:14.5px;font-weight:600}
+  .crit .trilho{position:relative;height:26px}
+  .crit .max{position:absolute;inset:0 auto 0 0;border-radius:7px;background:var(--azul-fundo);border:1px dashed var(--azul-selecao)}
+  .crit .med{position:absolute;inset:4px auto 4px 4px;border-radius:5px;background:var(--azul)}
+  .crit .v{font-size:14px;text-align:right;color:var(--grafite-2)}
+  .crit .v b{font-size:17px;color:var(--grafite)}
+  .regua{position:relative;height:56px;margin-top:30px}
+  .regua .faixa{position:absolute;top:0;height:40px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff}
+  .regua .marca{position:absolute;top:44px;font-size:12px;color:var(--grafite-2);transform:translateX(-50%)}
+  .passos{display:grid;gap:12px;margin-top:6px}
+  .passo{display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:start}
+  .passo h4{font-size:15px;font-weight:700;display:flex;gap:8px;align-items:center}
+  .passo h4 .pilula{font-size:11px;padding:2px 8px}
+  .passo p{font-size:13.5px;line-height:1.45;color:var(--texto);margin-top:3px}
+  .teto{margin-top:20px;padding:14px 16px;border-radius:12px;background:var(--vermelho-fundo);font-size:13.5px;line-height:1.5;color:#7A1414}
+  .teto b{color:#C41F1F}
+</style>
+</head>
+<body>
+<div class="topo">
+  <span class="lbl">Regra de pontuação · 0 a 100</span>
+  <h1>A IA dá as notas, o código decide</h1>
+  <p>Cada critério tem um peso fixo. A IA preenche as 6 notas num formato fixo; o código limita cada nota ao máximo, soma, aplica o teto do eliminatório e define faixa e ação. Nas 46 vagas analisadas, todas as regras foram cumpridas.</p>
+  <div class="legenda">
+    <span><i class="leg-cor" style="background:var(--azul-fundo);border-style:dashed"></i>peso máximo do critério</span>
+    <span><i class="leg-cor" style="background:var(--azul);border-color:var(--azul)"></i>nota média das 46 vagas</span>
+  </div>
+</div>
+<div class="grade">
+  <div class="card bloco">
+    <h3>6 critérios, pesos fixos</h3>
+    <p class="desc">A barra tracejada é o peso; a azul, a nota média obtida.</p>
+    <div class="crit"><span class="r">Compatibilidade técnica</span><div class="trilho"><i class="max" style="width:100%"></i><i class="med" style="width:calc(68% - 8px)"></i></div><span class="v"><b>23,8</b> / 35</span></div>
+    <div class="crit"><span class="r">Experiência e responsabilidades</span><div class="trilho"><i class="max" style="width:71.4%"></i><i class="med" style="width:calc(48.9% - 8px)"></i></div><span class="v"><b>17,1</b> / 25</span></div>
+    <div class="crit"><span class="r">Senioridade</span><div class="trilho"><i class="max" style="width:42.9%"></i><i class="med" style="width:calc(39.7% - 8px)"></i></div><span class="v"><b>13,9</b> / 15</span></div>
+    <div class="crit"><span class="r">Modalidade e localização</span><div class="trilho"><i class="max" style="width:28.6%"></i><i class="med" style="width:calc(20.3% - 8px)"></i></div><span class="v"><b>7,1</b> / 10</span></div>
+    <div class="crit"><span class="r">Diferenciais</span><div class="trilho"><i class="max" style="width:28.6%"></i><i class="med" style="width:calc(22% - 8px)"></i></div><span class="v"><b>7,7</b> / 10</span></div>
+    <div class="crit"><span class="r">Formação e elegibilidade</span><div class="trilho"><i class="max" style="width:14.3%"></i><i class="med" style="width:calc(11.7% - 8px)"></i></div><span class="v"><b>4,1</b> / 5</span></div>
+
+    <div class="regua">
+      <div class="faixa" style="left:0;width:50%;background:#FF3B3B;border-radius:8px 0 0 8px">DESCARTAR</div>
+      <div class="faixa" style="left:50%;width:15%;background:#B8BCC4">BAIXA</div>
+      <div class="faixa" style="left:65%;width:15%;background:#1A6BF5">MÉDIA</div>
+      <div class="faixa" style="left:80%;width:20%;background:#00995A;border-radius:0 8px 8px 0">ALTA</div>
+      <span class="marca" style="left:0;transform:none">0</span><span class="marca" style="left:50%">50</span><span class="marca" style="left:65%">65</span><span class="marca" style="left:80%">80</span><span class="marca" style="left:100%;transform:translateX(-100%)">100</span>
+    </div>
+  </div>
+  <div class="card bloco">
+    <h3>Como o score é montado</h3>
+    <p class="desc">Só o passo 1 depende da IA.</p>
+    <div class="passos">
+      <div class="passo"><span class="num">1</span><div><h4>Notas por critério <span class="pilula p-ia">IA</span></h4><p>Compara a vaga com o perfil. Projeto conta como evidência técnica, mas não como experiência profissional.</p></div></div>
+      <div class="passo"><span class="num">2</span><div><h4>Validação <span class="pilula p-cod">código</span></h4><p>Arredonda e limita cada nota entre 0 e o máximo. Nota ausente interrompe o fluxo.</p></div></div>
+      <div class="passo"><span class="num">3</span><div><h4>Soma e teto <span class="pilula p-cod">código</span></h4><p>Soma as 6 notas. Com requisito eliminatório, o score fica limitado a 49.</p></div></div>
+      <div class="passo"><span class="num">4</span><div><h4>Faixa e ação <span class="pilula p-cod">código</span></h4><p>ALTA prepara candidatura, MÉDIA revisa, BAIXA registra, DESCARTAR arquiva.</p></div></div>
+    </div>
+    <div class="teto"><b>Eliminatório só quando é obrigatório.</b> "Desejável" e "diferencial" nunca eliminam, e na dúvida a vaga não é eliminada.</div>
+  </div>
+</div>
+</body>
+</html>

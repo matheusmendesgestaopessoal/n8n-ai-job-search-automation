@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Triagem</title>
+<link rel="stylesheet" href="diagramas.css">
+<style>
+  body{width:1600px;padding-bottom:40px}
+  .grade{display:grid;grid-template-columns:1.35fr 1fr;gap:18px;padding:30px 48px 0}
+  .bloco{padding:24px 26px}
+  .bloco h3{font-size:18px;font-weight:700;margin-bottom:4px}
+  .bloco .desc{font-size:13.5px;color:var(--grafite-2);margin-bottom:20px}
+  .degrau{display:grid;grid-template-columns:180px 1fr 70px;align-items:center;gap:14px;margin-top:12px}
+  .degrau .r{font-size:14px;font-weight:600}
+  .degrau .r small{display:block;font-size:12px;font-weight:400;color:var(--grafite-2)}
+  .barra{height:34px;border-radius:8px;background:var(--azul-fundo);overflow:hidden;display:flex}
+  .barra i{display:block;height:100%}
+  .degrau .v{font-size:22px;font-weight:800;text-align:right;letter-spacing:-.02em}
+  .pilha{display:flex;height:46px;border-radius:10px;overflow:hidden;margin-top:24px}
+  .pilha div{display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff}
+  .chaves{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+  .chaves div{font-size:13px;color:var(--texto);line-height:1.4}
+  .chaves b{display:block;font-size:14px;color:var(--grafite)}
+  .chaves i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+  .motivo{display:grid;grid-template-columns:1fr 160px 30px;align-items:center;gap:12px;margin-top:12px;font-size:14px}
+  .motivo .barra{height:22px;background:#F1F2F4}
+  .motivo b{text-align:right;font-size:16px}
+  .destaque{margin-top:22px;padding:16px 18px;border-radius:12px;background:var(--azul);color:#fff;font-size:14.5px;line-height:1.5}
+  .destaque b{font-size:30px;font-weight:800;letter-spacing:-.03em;display:block}
+  .nota{position:static;margin-top:14px;background:#FFF8DB}
+</style>
+</head>
+<body>
+<div class="topo">
+  <span class="lbl">Resultado · 29/09 a 11/10/2026</span>
+  <h1>De 54 vagas registradas a 30 alertas</h1>
+  <p>Histórico real da tabela <code>vagas</code> em 12 dias de execução, recalculado com <code>codigo/analises/diagnostico.py</code>. Empresas e textos das vagas não são publicados.</p>
+</div>
+<div class="grade">
+  <div class="card bloco">
+    <h3>O funil depois do pré-filtro</h3>
+    <p class="desc">A tabela guarda só as vagas que passaram pelo pré-filtro e pela deduplicação.</p>
+    <div class="degrau"><span class="r">Registradas<small>passaram pelo pré-filtro</small></span><div class="barra"><i style="width:100%;background:var(--azul-selecao)"></i></div><span class="v">54</span></div>
+    <div class="degrau"><span class="r">Com análise completa<small>sem 1 linha vazia e 7 da 1ª versão</small></span><div class="barra"><i style="width:85.2%;background:var(--azul-pasta)"></i></div><span class="v">46</span></div>
+    <div class="degrau"><span class="r">Chegaram ao Telegram<small>ALTA + MÉDIA</small></span><div class="barra"><i style="width:55.6%;background:var(--azul)"></i></div><span class="v">30</span></div>
+
+    <div class="pilha">
+      <div style="width:28.3%;background:#00995A">13</div>
+      <div style="width:37%;background:#1A6BF5">17</div>
+      <div style="width:2.2%;background:#B8BCC4"></div>
+      <div style="width:32.6%;background:#FF3B3B">15</div>
+    </div>
+    <div class="chaves">
+      <div><b><i style="background:#00995A"></i>ALTA · 28%</b>score ≥ 80, preparar candidatura</div>
+      <div><b><i style="background:#1A6BF5"></i>MÉDIA · 37%</b>65 a 79, revisar a vaga</div>
+      <div><b><i style="background:#B8BCC4"></i>BAIXA · 2%</b>50 a 64, só registrar</div>
+      <div><b><i style="background:#FF3B3B"></i>DESCARTAR · 33%</b>abaixo de 50 ou eliminatório</div>
+    </div>
+  </div>
+  <div class="card bloco">
+    <h3>Por que 15 vagas foram descartadas</h3>
+    <p class="desc">Requisito obrigatório que eu não atendo, apontado pela IA e aplicado pelo código.</p>
+    <div class="motivo"><span>Formação superior concluída</span><div class="barra"><i style="width:100%;background:#FF3B3B"></i></div><b>6</b></div>
+    <div class="motivo"><span>Inglês avançado ou fluente</span><div class="barra"><i style="width:83.3%;background:#FF3B3B"></i></div><b>5</b></div>
+    <div class="motivo"><span>Localização ou modalidade</span><div class="barra"><i style="width:50%;background:#FF3B3B"></i></div><b>3</b></div>
+    <div class="motivo"><span>Ferramenta específica</span><div class="barra"><i style="width:16.7%;background:#FF3B3B"></i></div><b>1</b></div>
+    <div class="destaque"><b>9 alertas evitados</b>Essas vagas somaram de 65 a 77 pontos. Sem a regra eliminatória, teriam chegado ao Telegram como MÉDIA.</div>
+    <div class="nota">11 dos 15 descartes foram por formação ou inglês, que aparecem escritos de forma parecida nos anúncios. Próximo passo: levar essa regra para o pré-filtro e economizar a chamada de IA.</div>
+  </div>
+</div>
+</body>
+</html>

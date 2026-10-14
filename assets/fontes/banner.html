@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Banner</title>
+<link rel="stylesheet" href="diagramas.css">
+<style>
+  body{width:1600px;padding:36px}
+  .faixa{display:grid;grid-template-columns:1.25fr 1fr;gap:28px;padding:44px 48px;align-items:center}
+  h1{font-size:54px;line-height:1.08;font-weight:800;letter-spacing:-.04em;margin-top:12px}
+  .sub{font-size:19px;line-height:1.55;color:var(--texto);margin-top:18px;max-width:720px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+  .numeros{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .n{padding:18px 20px;background:var(--fundo);border:1px solid var(--borda);border-radius:14px}
+  .n b{display:block;font-size:34px;font-weight:800;letter-spacing:-.03em}
+  .n span{font-size:14px;color:var(--grafite-2)}
+  .n.dest{background:var(--azul);border-color:var(--azul);color:#fff}
+  .n.dest span{color:#DCE8FF}
+  .marca{display:flex;align-items:center;gap:12px}
+  .av{width:44px;height:44px;border-radius:11px;background:var(--azul);color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center}
+  .chip .selo{width:18px;height:18px;font-size:10px;border-radius:5px}
+</style>
+</head>
+<body>
+<div class="card faixa">
+  <div>
+    <div class="marca"><div class="av">IA</div><span class="lbl">Automação · uso real · busca de vagas</span></div>
+    <h1>Só as vagas que valem<br>atenção <span class="sel">chegam até mim</span></h1>
+    <p class="sub">Um workflow no n8n busca vagas todo dia, descarta por regra o que não combina, usa IA para comparar cada vaga com o meu perfil, calcula o score em código, guarda o histórico no PostgreSQL e me avisa no Telegram com o material para me candidatar.</p>
+    <div class="chips">
+      <span class="chip"><i class="logo" data-logo="n8n" data-cor="#EA4B71"></i>n8n</span>
+      <span class="chip"><i class="logo" data-logo="javascript" data-cor="#D9B500"></i>JavaScript</span>
+      <span class="chip"><span class="selo" style="background:#111">AI</span>OpenAI · saída estruturada</span>
+      <span class="chip"><span class="selo" style="background:#1A6BF5">A</span>Apify</span>
+      <span class="chip"><i class="logo" data-logo="postgresql" data-cor="#4169E1"></i>PostgreSQL</span>
+      <span class="chip"><i class="logo" data-logo="telegram" data-cor="#26A5E4"></i>Telegram</span>
+      <span class="chip"><i class="logo" data-logo="python" data-cor="#3776AB"></i>Python · Pandas</span>
+    </div>
+  </div>
+  <div class="numeros">
+    <div class="n dest"><b>30 de 46</b><span>vagas analisadas chegaram ao Telegram com material pronto</span></div>
+    <div class="n"><b>29</b><span>nós no workflow, rodando todos os dias</span></div>
+    <div class="n"><b>6 critérios</b><span>com pesos fixos somando 100 pontos</span></div>
+    <div class="n"><b>100%</b><span>dos scores conferidos batem com as regras do código</span></div>
+    <div class="n"><b>9</b><span>alertas evitados pela regra de requisito eliminatório</span></div>
+    <div class="n"><b>6</b><span>documentos: abertura, regras, requisitos, dicionário, análise e revisão</span></div>
+  </div>
+</div>
+</body>
+</html>
