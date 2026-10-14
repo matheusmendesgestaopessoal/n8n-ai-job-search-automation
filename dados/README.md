@@ -7,7 +7,7 @@ meu perfil, gerado pela IA.
 As métricas publicadas no projeto (sem nomes de empresas) saem de:
 
 ```bash
-python codigo/analises/metricas.py
+python codigo/analises/diagnostico.py
 ```
 
 ## Como exportar
