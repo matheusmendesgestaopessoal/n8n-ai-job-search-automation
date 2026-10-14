@@ -1,4 +1,4 @@
-<!-- Prompt do nó "Classificar Vaga" (extraído por codigo/extrair_workflow.py). Trechos {{ ... }} são substituídos pelo n8n com os dados de cada vaga. -->
+<!-- Prompt do nó "Classificar Vaga" (cópia do workflow n8n). Trechos {{ ... }} são substituídos pelo n8n com os dados de cada vaga. -->
 
 Avalie objetivamente a compatibilidade entre o candidato e a vaga para priorização de candidatura.
 

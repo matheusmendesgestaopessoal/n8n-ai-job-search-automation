@@ -1,4 +1,4 @@
-// Nó "Code in JavaScript" do workflow n8n (extraído por codigo/extrair_workflow.py; edite no n8n)
+// Código do nó "Code in JavaScript" (cópia do workflow n8n; a fonte é workflow/n8n-ai-job-search-public.json)
 
 const item = $json;
 

@@ -1,4 +1,4 @@
-<!-- Prompt do nó "Analisar Vaga em Detalhes" (extraído por codigo/extrair_workflow.py). Trechos {{ ... }} são substituídos pelo n8n com os dados de cada vaga. -->
+<!-- Prompt do nó "Analisar Vaga em Detalhes" (cópia do workflow n8n). Trechos {{ ... }} são substituídos pelo n8n com os dados de cada vaga. -->
 
 Analise a vaga abaixo para preparar uma candidatura personalizada.
 

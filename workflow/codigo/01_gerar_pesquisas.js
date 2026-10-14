@@ -1,4 +1,4 @@
-// Nó "Gerar Pesquisas" do workflow n8n (extraído por codigo/extrair_workflow.py; edite no n8n)
+// Código do nó "Gerar Pesquisas" (cópia do workflow n8n; a fonte é workflow/n8n-ai-job-search-public.json)
 
 // =========================================================
 // CONFIGURAÇÃO GERAL
