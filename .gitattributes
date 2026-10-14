@@ -1,0 +1,6 @@
+# Barra de linguagens do GitHub: conta só o código principal do projeto.
+# HTML e CSS aqui são apoio (imagens do README); o JavaScript é o código dos nós do n8n.
+*.html linguist-detectable=false
+*.css linguist-detectable=false
+# O GitHub trata SQL como dado e não o mostra na barra; aqui ele é código.
+*.sql linguist-detectable=true
